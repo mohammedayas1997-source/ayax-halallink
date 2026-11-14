@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayax HalalLink | Islamic Matchmaking & Connections</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0E6B50;
+            --primary-dark: #073D2D;
+            --primary-light: #E8F5F1;
+            --gold: #D4AF37;
+            --gold-light: #F9F3DF;
+            --bg-gradient: radial-gradient(circle at top right, #148F6B 0%, #0E6B50 45%, #063729 100%);
+            --surface: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: 
+                radial-gradient(rgba(212, 175, 55, 0.18) 1.5px, transparent 1.5px),
+                radial-gradient(rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px);
+            background-size: 36px 36px;
+            background-position: 0 0, 18px 18px;
+            pointer-events: none;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 28px;
+            box-shadow: 
+                0 30px 60px -15px rgba(0, 0, 0, 0.45),
+                0 0 0 1px rgba(212, 175, 55, 0.25);
+            padding: 40px 34px 32px;
+            position: relative;
+            z-index: 1;
+            animation: cardEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(24px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Brand & Custom Logo Slot */
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-frame {
+            width: 84px;
+            height: 84px;
+            background: linear-gradient(145deg, #FFFFFF, var(--primary-light));
+            border: 2.5px solid var(--gold);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            box-shadow: 0 12px 24px rgba(14, 107, 80, 0.18);
+            margin-bottom: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-frame:hover {
+            transform: scale(1.04);
+        }
+
+        .logo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 16px;
+        }
+
+        .brand-title {
+            font-size: 27px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.6px;
+        }
+
+        .brand-title span {
+            color: var(--gold);
+        }
+
+        .brand-tagline {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Mode Switcher Tabs */
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #F1F5F9;
+            padding: 5px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            border: none;
+            background: transparent;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn.active {
+            background: #FFFFFF;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        /* Forms */
+        .form-panel {
+            display: none;
+        }
+
+        .form-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .field-group {
+            margin-bottom: 15px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-box svg {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+            pointer-events: none;
+        }
+
+        .input-box input, .field-group select {
+            width: 100%;
+            padding: 12.5px 14px 12.5px 42px;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            font-size: 14px;
+            color: var(--text-main);
+            background: #F8FAFC;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .field-group select {
+            padding-left: 14px;
+        }
+
+        .input-box input:focus, .field-group select:focus {
+            border-color: var(--primary);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(14, 107, 80, 0.12);
+        }
+
+        .input-box:focus-within svg {
+            color: var(--primary);
+        }
+
+        /* Embedded Full Terms & Conditions Box inside Page */
+        .terms-box-container {
+            margin: 16px 0;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            background: #F8FAFC;
+            overflow: hidden;
+        }
+
+        .terms-box-header {
+            background: var(--primary-light);
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terms-box-header span {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .expand-terms-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .terms-scroll-area {
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 12px 14px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .terms-scroll-area h4 {
+            color: var(--primary-dark);
+            font-size: 12.5px;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 3px;
+        }
+
+        .terms-scroll-area h4:first-child {
+            margin-top: 0;
+        }
+
+        .terms-scroll-area p {
+            margin-bottom: 6px;
+        }
+
+        .terms-scroll-area ul {
+            margin-left: 16px;
+            margin-bottom: 8px;
+        }
+
+        /* Terms Checkbox Row */
+        .terms-check-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 12px 0 18px;
+            font-size: 12.5px;
+            color: var(--text-main);
+            font-weight: 500;
+            line-height: 1.45;
+        }
+
+        .terms-check-group input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            margin-top: 2px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .terms-link {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 10px 20px rgba(14, 107, 80, 0.25);
+            margin-top: 4px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 26px rgba(14, 107, 80, 0.35);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0 16px;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .divider span {
+            padding: 0 12px;
+        }
+
+        /* Bottom Automatic Device Email Sign-In Button */
+        .device-email-btn {
+            width: 100%;
+            padding: 12px 16px;
+            background: #FFFFFF;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        }
+
+        .device-email-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(14, 107, 80, 0.15);
+        }
+
+        .email-badge-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #EA4335, #FBBC05, #34A853, #4285F4);
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .email-badge-inner {
+            width: 100%;
+            height: 100%;
+            background: #FFFFFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .device-btn-text {
+            text-align: left;
+        }
+
+        .device-btn-text strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .device-btn-text small {
+            display: block;
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .alert.error {
+            background: #FEF2F2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
+        }
+
+        .alert.success {
+            background: #F0FDF4;
+            color: #15803D;
+            border: 1px solid #BBF7D0;
+        }
+
+        .footer-legal {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .footer-security {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .footer-security span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Full-Screen Modal for Expanded Reading */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(6, 24, 18, 0.72);
+            backdrop-filter: blur(6px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 999;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 640px;
+            max-height: 86vh;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+            border: 1.5px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: #FFFFFF;
+            padding: 20px 26px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .modal-header small {
+            display: block;
+            font-size: 12px;
+            color: var(--gold-light);
+            margin-top: 2px;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #FFFFFF;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 24px 26px;
+            overflow-y: auto;
+            color: var(--text-main);
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+
+        .modal-body h3 {
+            color: var(--primary-dark);
+            font-size: 15px;
+            font-weight: 700;
+            margin: 18px 0 6px;
+        }
+
+        .modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body p {
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        .modal-body ul {
+            margin-left: 18px;
+            margin-bottom: 12px;
+            color: #334155;
+        }
+
+        .modal-body li {
+            margin-bottom: 6px;
+        }
+
+        .modal-footer {
+            padding: 16px 26px;
+            background: #F8FAFC;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-accept-btn {
+            background: var(--primary);
+            color: #FFFFFF;
+            border: none;
+            padding: 11px 22px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <!-- Logo Container (Place your logo.png inside backend/public/) -->
+    <div class="brand-header">
+        <div class="logo-frame">
+            <img src="logo.png" alt="Ayax HalalLink Logo" onerror="this.style.display='none'; document.getElementById('fallbackLogo').style.display='block';">
+            <svg id="fallbackLogo" style="display:none;" width="42" height="42" viewBox="0 0 64 64" fill="none">
+                <path d="M32 4L39.5 14.5L52 12L49.5 24.5L60 32L49.5 39.5L52 52L39.5 49.5L32 60L24.5 49.5L12 52L14.5 39.5L4 32L14.5 24.5L12 12L24.5 14.5L32 4Z" stroke="#0E6B50" stroke-width="3" fill="#0E6B50" fill-opacity="0.1"/>
+                <circle cx="27" cy="32" r="9" stroke="#0E6B50" stroke-width="3.2"/>
+                <circle cx="37" cy="32" r="9" stroke="#D4AF37" stroke-width="3.2"/>
+            </svg>
+        </div>
+        <h1 class="brand-title">Ayax <span>HalalLink</span></h1>
+        <p class="brand-tagline">Shariah-Compliant Marriage & Meaningful Connections</p>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs">
+        <button type="button" class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+        <button type="button" class="tab-btn" id="tabRegister" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" class="form-panel active" autocomplete="on">
+        <div class="field-group">
+            <label for="loginEmail">Email Address</label>
+            <div class="input-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <input type="email" id="loginEmail" name="email" placeholder="name@example.com" autocomplete="username email" required>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label for="loginPassword">Password</label>
+            <div class="input-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <input type="password" id="loginPassword" name="password" placeholder="••••••••" autocomplete="current-password" required>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="loginBtn">Sign In</button>
+    </form>
+
+    <!-- REGISTER FORM WITH FULL EMBEDDED TERMS & CONDITIONS -->
+    <form id="registerForm" class="form-panel" autocomplete="on">
+        <div class="field-group">
+            <label for="regName">Full Name</label>
+            <div class="input-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <input type="text" id="regName" name="name" placeholder="Enter your full name" autocomplete="name" required>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label for="regEmail">Email Address</label>
+            <div class="input-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <input type="email" id="regEmail" name="email" placeholder="name@example.com" autocomplete="email" required>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label for="regGender">Gender</label>
+            <select id="regGender" required>
+                <option value="" disabled selected>Select your gender...</option>
+                <option value="male">Brother (Male)</option>
+                <option value="female">Sister (Female)</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label for="regPassword">Create Password</label>
+            <div class="input-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <input type="password" id="regPassword" name="new-password" placeholder="Minimum 6 characters" minlength="6" autocomplete="new-password" required>
+            </div>
+        </div>
+
+        <!-- Complete Terms & Conditions Scrollable Box directly inside the form -->
+        <div class="terms-box-container">
+            <div class="terms-box-header">
+                <span>Terms & Conditions & Privacy Policy</span>
+                <button type="button" class="expand-terms-btn" onclick="openTermsModal()">Full Screen</button>
+            </div>
+            <div class="terms-scroll-area">
+                <h4>1. Purpose & Shariah Compliance</h4>
+                <p>Ayax HalalLink is strictly dedicated to facilitating lawful (Halal) marriage and honorable matrimonial introductions in accordance with Islamic principles. Casual dating, explicit content, or un-Islamic interactions are strictly prohibited.</p>
+
+                <h4>2. Eligibility & Account Integrity</h4>
+                <ul>
+                    <li>You must be at least 18 years of age and legally eligible for marriage under applicable laws.</li>
+                    <li>All profile information, including age, marital status, location, and religious practice, must be truthful and accurate.</li>
+                    <li>Creating duplicate, fake, or impersonation accounts will result in immediate and permanent suspension.</li>
+                </ul>
+
+                <h4>3. Guardian (Waliyyi) Oversight & Safety</h4>
+                <p>To uphold modesty, transparency, and family protection, female members are strongly encouraged to link a Wali (Guardian) to oversee communications. Ayax HalalLink reserves the right to review reported conversations to enforce Islamic etiquette and prevent abuse.</p>
+
+                <h4>4. Code of Conduct & Zero-Tolerance Policy</h4>
+                <ul>
+                    <li>Harassment, hate speech, financial solicitation, fraud, or sharing inappropriate media is strictly forbidden.</li>
+                    <li>Members must respect boundaries, photo-blur privacy settings, and communication preferences at all times.</li>
+                </ul>
+
+                <h4>5. Points, Rewards & Financial Transactions</h4>
+                <p>Promotional bonus points (such as the 100 welcome points) are subject to platform verification rules. Withdrawals or paid features processed via supported gateways (Paystack or Stripe) are subject to standard identity and fraud-prevention checks.</p>
+
+                <h4>6. Privacy & Data Protection</h4>
+                <p>Personal records, private messages, and blurred profile photos are encrypted and protected. Ayax HalalLink will never sell or rent your personal data to third-party advertisers.</p>
+
+                <h4>7. Account Termination</h4>
+                <p>You may delete your account and associated profile data at any time through your account settings. Ayax HalalLink reserves the right to suspend or terminate any account that violates these Terms & Conditions without prior notice.</p>
+            </div>
+        </div>
+
+        <!-- Mandatory Agreement Checkbox -->
+        <div class="terms-check-group">
+            <input type="checkbox" id="agreeTerms" required>
+            <label for="agreeTerms">
+                I have read, understood, and agree to the complete 
+                <span class="terms-link" onclick="openTermsModal()">Terms & Conditions & Privacy Policy</span> of Ayax HalalLink.
+            </label>
+        </div>
+
+        <button type="submit" class="submit-btn" id="registerBtn">Create Account (+100 Bonus Points)</button>
+    </form>
+
+    <!-- Bottom Automatic Device Email Sign-In Section -->
+    <div class="divider"><span>Or Continue Instantly</span></div>
+
+    <button type="button" class="device-email-btn" id="deviceEmailLoginBtn" onclick="triggerDeviceEmailLogin()">
+        <div class="email-badge-icon">
+            <div class="email-badge-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M2 6C2 4.89543 2.89543 4 4 4H20C21.1046 4 22 4.89543 22 6V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V6Z" stroke="#0E6B50" stroke-width="2"/>
+                    <path d="M22 6L12 13L2 6" stroke="#EA4335" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+        <div class="device-btn-text">
+            <strong>Continue with Device Email</strong>
+            <small id="detectedEmailSub">Tap to sign in automatically with your phone email</small>
+        </div>
+    </button>
+
+    <!-- Legal & Terms Notice -->
+    <div class="footer-legal">
+        By continuing, you accept our 
+        <span class="terms-link" onclick="openTermsModal()">Terms & Conditions & Privacy Policy</span>.
+    </div>
+
+    <div class="footer-security">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0E6B50" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        Guardian Protected • <span>Ayax HalalLink Global</span>
+    </div>
+</div>
+
+<!-- FULL-SCREEN MODAL FOR TERMS & CONDITIONS -->
+<div class="modal-overlay" id="termsModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div>
+                <h2>Terms & Conditions & Privacy Policy</h2>
+                <small>Ayax HalalLink Global • Effective Date: 2026</small>
+            </div>
+            <button type="button" class="modal-close" onclick="closeTermsModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <h3>1. Purpose & Shariah Compliance</h3>
+            <p>Ayax HalalLink is strictly dedicated to facilitating lawful (Halal) marriage and honorable matrimonial introductions in accordance with Islamic principles. Casual dating, explicit content, or un-Islamic interactions are strictly prohibited.</p>
+
+            <h3>2. Eligibility & Account Integrity</h3>
+            <ul>
+                <li>You must be at least 18 years of age and legally eligible for marriage under applicable laws.</li>
+                <li>All profile information, including age, marital status, location, and religious practice, must be truthful and accurate.</li>
+                <li>Creating duplicate, fake, or impersonation accounts will result in immediate and permanent suspension.</li>
+            </ul>
+
+            <h3>3. Guardian (Waliyyi) Oversight & Safety</h3>
+            <p>To uphold modesty, transparency, and family protection, female members are strongly encouraged to link a Wali (Guardian) to oversee communications. Ayax HalalLink reserves the right to monitor reported conversations to enforce Islamic etiquette and prevent abuse.</p>
+
+            <h3>4. Code of Conduct & Zero-Tolerance Policy</h3>
+            <ul>
+                <li>Harassment, hate speech, financial solicitation, fraud, or sharing inappropriate media is strictly forbidden.</li>
+                <li>Members must respect boundaries, photo-blur privacy settings, and communication preferences at all times.</li>
+            </ul>
+
+            <h3>5. Points, Rewards & Financial Transactions</h3>
+            <p>Promotional bonus points (such as the 100 welcome points) are subject to platform verification rules. Withdrawals or paid features processed via supported gateways (Paystack or Stripe) are subject to standard identity and fraud-prevention checks.</p>
+
+            <h3>6. Privacy & Data Protection</h3>
+            <p>We respect your privacy. Personal records, private messages, and blurred profile photos are encrypted and protected. Ayax HalalLink will never sell or rent your personal data to third-party advertisers.</p>
+
+            <h3>7. Account Termination</h3>
+            <p>You may delete your account and associated profile data at any time through your account settings. Ayax HalalLink reserves the right to suspend or terminate any account that violates these Terms & Conditions without prior notice.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="modal-accept-btn" onclick="acceptTermsAndClose()">I Understand & Accept</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const alertBox = document.getElementById('alertBox');
+    const termsModal = document.getElementById('termsModal');
+
+    function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert ${type}`;
+        alertBox.style.display = 'block';
+    }
+
+    function switchTab(tab) {
+        alertBox.style.display = 'none';
+        const isLogin = tab === 'login';
+        document.getElementById('tabLogin').classList.toggle('active', isLogin);
+        document.getElementById('tabRegister').classList.toggle('active', !isLogin);
+        document.getElementById('loginForm').classList.toggle('active', isLogin);
+        document.getElementById('registerForm').classList.toggle('active', !isLogin);
+    }
+
+    function openTermsModal() {
+        termsModal.classList.add('open');
+    }
+
+    function closeTermsModal() {
+        termsModal.classList.remove('open');
+    }
+
+    function acceptTermsAndClose() {
+        const checkbox = document.getElementById('agreeTerms');
+        if (checkbox) checkbox.checked = true;
+        closeTermsModal();
+    }
+
+    function closeModalOnBackdrop(event) {
+        if (event.target === termsModal) {
+            closeTermsModal();
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedEmail = localStorage.getItem('halallink_device_email');
+        if (savedEmail) {
+            document.getElementById('detectedEmailSub').textContent = `Detected: ${savedEmail}`;
+        }
+    });
+
+    async function triggerDeviceEmailLogin() {
+        showAlert('Connecting to your device email account...', 'success');
+
+        try {
+            if (window.PasswordCredential && navigator.credentials) {
+                const cred = await navigator.credentials.get({
+                    password: true,
+                    mediation: 'optional'
+                });
+
+                if (cred && cred.id) {
+                    document.getElementById('loginEmail').value = cred.id;
+                    if (cred.password) {
+                        document.getElementById('loginPassword').value = cred.password;
+                        await executeLogin(cred.id, cred.password);
+                        return;
+                    }
+                }
+            }
+
+            const storedEmail = localStorage.getItem('halallink_device_email');
+            const storedToken = localStorage.getItem('token');
+
+            if (storedEmail && storedToken) {
+                showAlert(`Signing in automatically as ${storedEmail}...`, 'success');
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 600);
+                return;
+            }
+
+            switchTab('login');
+            const emailInput = document.getElementById('loginEmail');
+            emailInput.focus();
+            emailInput.click();
+            showAlert('Select your phone email suggestion above to continue.', 'success');
+
+            emailInput.addEventListener('change', async function autoProceed() {
+                if (emailInput.value.includes('@')) {
+                    localStorage.setItem('halallink_device_email', emailInput.value.trim());
+                    const res = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: emailInput.value.trim(), autoLogin: true })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.token) {
+                        localStorage.setItem('token', data.token);
+                        window.location.href = '/dashboard.html';
+                    } else {
+                        document.getElementById('loginPassword').focus();
+                    }
+                }
+                emailInput.removeEventListener('change', autoProceed);
+            });
+
+        } catch (err) {
+            switchTab('login');
+            document.getElementById('loginEmail').focus();
+        }
+    }
+
+    async function executeLogin(email, password) {
+        const btn = document.getElementById('loginBtn');
+        btn.disabled = true;
+        btn.textContent = 'Signing In...';
+
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+            if (response.ok && data.token) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('halallink_device_email', email);
+
+                if (window.PasswordCredential && navigator.credentials) {
+                    const cred = new PasswordCredential({ id: email, password: password });
+                    await navigator.credentials.store(cred).catch(() => {});
+                }
+
+                showAlert('Signed in successfully! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 700);
+            } else {
+                showAlert(data.error || 'Invalid email or password.', 'error');
+            }
+        } catch (err) {
+            showAlert('Unable to connect to server.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Sign In';
+        }
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        await executeLogin(email, password);
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!document.getElementById('agreeTerms').checked) {
+            showAlert('Please read and accept the Terms & Conditions first.', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('registerBtn');
+        const fullName = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const gender = document.getElementById('regGender').value;
+        const password = document.getElementById('regPassword').value;
+
+        btn.disabled = true;
+        btn.textContent = 'Creating Account...';
+
+        try {
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    full_name: fullName,
+                    fullName: fullName,
+                    email,
+                    gender,
+                    password,
+                    acceptedTerms: true
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('halallink_device_email', email);
+                showAlert('Account created! +100 Bonus Points added.', 'success');
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 900);
+                } else {
+                    setTimeout(() => switchTab('login'), 1100);
+                }
+            } else {
+                showAlert(data.error || 'Registration failed. Please check your details.', 'error');
+            }
+        } catch (err) {
+            showAlert('Unable to connect to server.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Create Account (+100 Bonus Points)';
+        }
+    });
+</script>
+
+</body>
+</html>
